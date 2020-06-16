@@ -1,0 +1,41 @@
+{% extends 'accounts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}My Current Units{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- ENROLMENT -->
+    <p class="h3 text-center">My Current Units</p>
+    <div class="my-2 text-right">
+        <a href="{% url 'attendance:register_course' %}" class="btn btn-primary">Register New Course</a>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Lesson</th>
+                <th>Start</th>
+                <th>Attendance</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% if enrolments %}
+            {% for enrolment in enrolments %}
+            <tr>
+                <td>{{ enrolment }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="3" class="text-center text-danger">You have not enrolled for any course yet...</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
+

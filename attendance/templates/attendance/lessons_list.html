@@ -1,0 +1,43 @@
+{% extends 'accounts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Lessons{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- LESSONS -->
+    <p class="h3 text-center">Scheduled Lessons</p>
+    {% if user.is_instructor %}
+    <div class="my-2 text-right">
+        <a href="{% url 'attendance:lesson_create' %}" class="btn btn-primary">Add Lesson</a>
+    </div>
+    {% endif %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Lesson</th>
+                <th>Start</th>
+                <th>Attendance</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% if lessons %}
+            {% for lesson in lessons %}
+            <tr>
+                <td>{{ lesson }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="3" class="text-center text-danger">No lessons yet...</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
+

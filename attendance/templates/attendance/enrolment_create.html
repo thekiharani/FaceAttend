@@ -1,0 +1,30 @@
+{% extends 'accounts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load widget_tweaks %}
+
+{% block title %}Course Registration{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- CAURSE REGISTRATION -->
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <p class="h3 card-header text-center">Course Registration</p>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+{% endblock content %}
+

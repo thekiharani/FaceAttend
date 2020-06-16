@@ -4,13 +4,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
+Django = "*"
 django-crispy-forms = "*"
 django-widget-tweaks = "*"
-pillow = "*"
+Pillow = "*"
+cmake = "*"
+face-recognition = "*"
 
 [dev-packages]
 pylint = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.7"

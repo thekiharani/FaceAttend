@@ -1,0 +1,30 @@
+{% extends 'accounts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load widget_tweaks %}
+
+{% block title %}New Lesson{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- NEW LESSON -->
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <p class="h3 card-header text-center">New Lesson</p>
+                <div class="card-body">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+{% endblock content %}
+

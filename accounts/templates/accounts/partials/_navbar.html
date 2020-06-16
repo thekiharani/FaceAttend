@@ -3,26 +3,23 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarToggler">
-        <a class="navbar-brand" href="#">FaceAttend</a>
+        <a class="navbar-brand" href="{% url 'attendance:home' %}">FaceAttend</a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="projectsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Classes
-                </a>
-                <div class="dropdown-menu" aria-labelledby="projectsDropdown">
-                    <a class="dropdown-item" href="#">All</a>
-                </div>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'attendance:courses' %}">Courses</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Dashboard</span></a>
+                <a class="nav-link" href="{% url 'attendance:lessons' %}">Lessons</span></a>
             </li>
+            {% endif %}
         </ul>
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             {% if user.is_authenticated %}
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ user.email }}
+                    {{ user.name }}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="accountDropdown">
                     <a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a>
