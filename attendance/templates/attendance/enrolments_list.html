@@ -14,9 +14,8 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Lesson</th>
-                <th>Start</th>
-                <th>Attendance</th>
+                <th>Course</th>
+                <th>Date Enrolled</th>
             </tr>
         </thead>
         <tbody>
@@ -25,13 +24,12 @@
             {% for enrolment in enrolments %}
             <tr>
                 <td>{{ enrolment }}</td>
-                <td></td>
-                <td></td>
+                <td>{{ enrolment.date_enrolled }}</td>
             </tr>
             {% endfor %}
             {% else %}
             <tr>
-                <td colspan="3" class="text-center text-danger">You have not enrolled for any course yet...</td>
+                <td colspan="2" class="text-center text-danger">You have not enrolled for any course yet...</td>
             </tr>
             {% endif %}
         </tbody>

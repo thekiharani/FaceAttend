@@ -7,7 +7,7 @@
 {% block content %}
 <div class="container my-5">
     <!-- COURSES -->
-    <p class="h3 text-center">Available Courses</p>
+    <p class="h3 text-center">Courses under Me</p>
     {% if user.is_instructor %}
     <div class="my-2 text-right">
         <a href="{% url 'attendance:course_create' %}" class="btn btn-primary">Add Course</a>
@@ -18,10 +18,9 @@
             <tr>
                 <th>Course Name</th>
                 {% if user.is_instructor %}
-                <th>Students Enrolled</th>
-                <th>Action</th>
-                {% else %}
-                <th>Date Enrolled</th>
+                    <th>Students Enrolled</th>
+                    <th>Start Lesson</th>
+                    <th>Attendance</th>
                 {% endif %}
             </tr>
         </thead>
@@ -31,15 +30,24 @@
             <tr>
                 <td>{{ course.name }}</td>
                 {% if user.is_instructor %}
-                <td>{{ course.students.count }}</td>
-                <td></td>
-                {% else %}
-                <th>{{ course.enrolment.date_enrolled }}</th>
+                    <td>{{ course.students.count }}</td>
+                    <td>
+                        <a href="{% url 'attendance:lesson_create' %}" class="btn btn-primary btn-block">Start</a>
+                    </td>
+                        <td>
+                        <a href="{% url 'attendance:attendance' %}" class="btn btn-success btn-block">Attendance</a>
+                    </td>
                 {% endif %}
             </tr>
             {% endfor %}
             {% else %}
-            <p class="text-center text-danger">No courses yet...</p>
+            <tr>
+            {% if user.is_instructor %}
+                <td colspan="4" class="text-center text-danger">There are no courses under you yet...</td>
+            {% else %}
+                <td class="text-center text-danger">You have not enrolled for any course yet...</td>
+            {% endif %}
+            </tr>
             {% endif %}
         </tbody>
     </table>

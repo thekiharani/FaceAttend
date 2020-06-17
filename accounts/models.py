@@ -9,7 +9,7 @@ class CustomUser(AbstractUser):
     username = None
     name = models.CharField(_('Full Name'), max_length=255)
     email = models.EmailField(_('Email Address'), unique=True)
-    profile_pic = models.ImageField(_('Choose Profile Picture'), upload_to='users/avatars/', null=True, blank=True)
+    face_pic = models.ImageField(_('Choose Profile Picture'), null=True, blank=True)
     is_instructor = models.BooleanField(
         _('Is Instructor'), default=False,
         help_text='Designates whether the user is an instructor'

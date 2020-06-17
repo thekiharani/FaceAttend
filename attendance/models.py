@@ -3,6 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 
+
 class Course(models.Model):
     name = models.CharField(_('Course Name'), max_length=100, unique=True)
     slug = models.SlugField(_('Course Slug'), max_length=255, unique=True, default='', editable=False)
@@ -22,6 +23,7 @@ class Course(models.Model):
     def __str__(self):
         return self.name
 
+
 class Enrolment(models.Model):
     student = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     course = models.ForeignKey('attendance.Course', on_delete=models.CASCADE)
@@ -36,9 +38,11 @@ class Enrolment(models.Model):
     def __str__(self):
         return f'{self.course} Enrolment'
 
+
 class Lesson(models.Model):
     instructor = models.ForeignKey(get_user_model(), related_name='lessons', on_delete=models.CASCADE)
     course = models.ForeignKey('attendance.Course', on_delete=models.CASCADE)
+    done = models.BooleanField(default=False)
     lesson_time = models.DateTimeField(_('Lesson Date'), auto_now_add=True)
 
     class Meta:
@@ -48,9 +52,11 @@ class Lesson(models.Model):
     def __str__(self):
         return f'{self.course} Lesson'
 
+
 class Attendance(models.Model):
-    lesson = models.ForeignKey('attendance.Lesson', on_delete=models.CASCADE)
+    lesson = models.ForeignKey('attendance.Lesson', on_delete=models.CASCADE, related_name='attendance')
     student = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    proof = models.ImageField(null=True, blank=True)
     timestamp = models.DateTimeField(_('Lesson Time'), auto_now_add=True)
 
     class Meta:

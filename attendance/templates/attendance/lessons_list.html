@@ -27,7 +27,9 @@
             {% for lesson in lessons %}
             <tr>
                 <td>{{ lesson }}</td>
-                <td></td>
+                <td>
+                    <a href="{% url 'attendance:live_attendance' lesson_id=lesson.pk %}" class="btn btn-primary btn-block">Start</a>
+                </td>
                 <td></td>
             </tr>
             {% endfor %}
@@ -40,4 +42,3 @@
     </table>
 </div>
 {% endblock content %}
-

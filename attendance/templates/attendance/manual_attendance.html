@@ -2,17 +2,16 @@
 
 {% load crispy_forms_tags %}
 
-{% load widget_tweaks %}
-
-{% block title %}Record Attendance{% endblock %}
+{% block title %}Manual Attendance{% endblock %}
 
 {% block content %}
 <div class="container my-5">
-    <!-- Record Attendance -->
+    <!-- Manual Attendance -->
     <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card">
-                <p class="h3 card-header text-center">Record Attendance</p>
+                {% include 'attendance/partials/_messages.html' %}
+                <p class="h3 card-header text-center">Manual Attendance</p>
                 <div class="card-body">
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}

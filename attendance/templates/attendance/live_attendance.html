@@ -1,0 +1,40 @@
+{% extends 'accounts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% load widget_tweaks %}
+
+{% block title %}Record Attendance{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Record Attendance -->
+    <div class="row">
+        <div class="col-md-8">
+            <img src="{% url 'attendance:video_feed' %}" alt="" width="100%">
+            <div class="my-4 mx-auto d-flex justify-content-between">
+                <div>
+                    <a href="{% url 'attendance:manual_attendance' lesson_id=lesson.pk %}" class="btn btn-primary px-4">Manual Checkin</a>
+                </div>
+                <div>
+                    <a href="{% url 'attendance:attendance' %}" class="btn btn-danger px-4">End Session</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="border p-3">
+                {% for attendance in lesson.attendance.all %}
+                    <strong>{{ attendance.student }}</strong> <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script>
+console.log('We are here today...')
+</script>
+{% endblock javascript %}
+

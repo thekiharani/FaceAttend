@@ -5,15 +5,17 @@ from django.shortcuts import redirect
 
 from .forms import CustomUserCreationForm
 
+
 def login_success(request):
     """
     Redirects users based on whether they are in the admins group
     """
     if request.user.is_instructor:
         # user is an admin
-        return redirect('attendance:lessons')
+        return redirect('attendance:courses')
     else:
         return redirect('attendance:my_courses')
+
 
 class SignUpView(generic.CreateView):
     form_class = CustomUserCreationForm
