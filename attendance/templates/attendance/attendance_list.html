@@ -37,10 +37,10 @@ $(document).ready(function () {
         e.preventDefault()
         $("a.attendance_view").removeClass("active");
         $(this).addClass('active')
-        var url =  $(this).attr('href')
+        var link =  $(this).attr('href')
         $.ajax({
             type: 'GET',
-            url: url,
+            url: link,
             success: function (res) {
                 $('#render').html(res)
                 console.log(res)

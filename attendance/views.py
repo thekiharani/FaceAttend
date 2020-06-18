@@ -39,7 +39,7 @@ class CourseCreate(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin,
     template_name = 'attendance/course_create.html'
 
     model = Course
-    fields = ('name', 'description')
+    fields = ('name',)
     success_url = reverse_lazy('attendance:courses')
     login_url = 'login'
 
@@ -160,8 +160,9 @@ class AttendanceLive(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         course = Course.objects.get(pk=self.kwargs['pk'])
-        attendance = Attendance.objects.create(course=course)
-        self.request.session['attendance'] = attendance.pk
+        attendance = Attendance.objects.create(course=course, total_enrolment=course.students.count())
+        self.request.session['attendance_id'] = attendance.pk
+        self.request.session['course_id'] = course.pk
         context['attendance'] = attendance
         return context
 
@@ -185,26 +186,27 @@ class AttendanceCreate(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
     success_url = reverse_lazy('attendance:courses')
 
     def form_valid(self, form):
-        form.instance.attendance_id = self.request.session['attendance']
+        form.instance.attendance_id = self.request.session['attendance_id']
         return super().form_valid(form)
 
 
-def gen(camera, attendance):
+def gen(camera, attendance_id, course_id):
     while True:
-        frame = camera.get_frame(attendance)
+        frame = camera.get_frame(attendance_id, course_id)
         yield (b'...frame\r\n'
                b'Content-Type: image/jpg\r\n\r\n' + frame + b'\r\n\r\n')
 
 
 def video_feed(request):
-    attendance = request.session['attendance']
-    return StreamingHttpResponse(gen(VideoCamera(), attendance),
+    attendance_id = request.session['attendance_id']
+    course_id = request.session['course_id']
+    return StreamingHttpResponse(gen(VideoCamera(), attendance_id, course_id),
                                  content_type='multipart/x-mixed-replace; boundary=frame')
 
 
 # Ajax routes
 def update_attendance(request):
-    attendance = Attendance.objects.get(pk=request.session['attendance'])
+    attendance = Attendance.objects.get(pk=request.session['attendance_id'])
     return render(request, 'attendance/ajax/update_attendance.html', {
         'attendance': attendance
     })

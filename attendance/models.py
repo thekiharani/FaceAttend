@@ -9,7 +9,6 @@ class Course(models.Model):
     slug = models.SlugField(_('Course Slug'), max_length=255, unique=True, default='', editable=False)
     students = models.ManyToManyField(get_user_model(), related_name='courses_taken', through='Enrolment')
     instructor = models.ForeignKey(get_user_model(), related_name='courses_instructed', on_delete=models.CASCADE)
-    description = models.TextField(_('Course Description'), null=True, blank=True)
 
     def save(self, *args, **kwargs):
         value = self.name
@@ -18,13 +17,14 @@ class Course(models.Model):
 
     class Meta:
         verbose_name = _("Course")
-        verbose_name_plural = _("Courses")
+        verbose_name_plural = _("Courses") # Translate to multiple languages if necessary
 
     def __str__(self):
         return self.name
 
 
 class Enrolment(models.Model):
+    # Pivot table: links courses and students through m:n relationship
     student = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     course = models.ForeignKey('attendance.Course', related_name='enrolments', on_delete=models.CASCADE)
     date_enrolled = models.DateTimeField(_('Date Enrolled'), auto_now_add=True)
@@ -42,6 +42,7 @@ class Enrolment(models.Model):
 class Attendance(models.Model):
     course = models.ForeignKey('attendance.Course', on_delete=models.CASCADE, related_name='attendance')
     students = models.ManyToManyField(get_user_model(), through='Proof')
+    total_enrolment =  models.IntegerField()
     timestamp = models.DateTimeField(_('Lesson Time'), auto_now_add=True)
 
     class Meta:
@@ -53,6 +54,7 @@ class Attendance(models.Model):
 
 
 class Proof(models.Model):
+    # Pivot table: links attendnce and students through m:n relationship
     student = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     attendance = models.ForeignKey('attendance.Attendance', on_delete=models.CASCADE)
     timestamp = models.DateTimeField(_('Date Clocked'), auto_now_add=True)
