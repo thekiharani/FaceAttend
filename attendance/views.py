@@ -58,33 +58,6 @@ class CourseDelete(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin,
     success_url = reverse_lazy('attendance:courses')
 
 
-# Proofs
-class ProofsList(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    def test_func(self):
-        return self.request.user.is_instructor
-
-    model = Proof
-    context_object_name = 'proofs'
-    template_name = 'attendance/proofs_list.html'
-
-
-class ProofCreate(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
-    def test_func(self):
-        return self.request.user.is_instructor
-
-    success_message = 'Proof successfully added'
-    template_name = 'attendance/proof_create.html'
-
-    model = Proof
-    fields = ('student',)
-    success_url = reverse_lazy('attendance:courses')
-    login_url = 'login'
-
-    def form_valid(self, form):
-        form.instance.instructor = self.request.user
-        return super().form_valid(form)
-
-
 # Enrolment
 class EnrolmentList(LoginRequiredMixin, ListView):
     model = Enrolment
