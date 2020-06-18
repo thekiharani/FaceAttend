@@ -14,7 +14,6 @@ urlpatterns = [
     path('attendance/<int:pk>/', views.AttendanceList.as_view(), name='attendance'),
     path('live_attendance/<int:pk>/', views.AttendanceLive.as_view(), name='live_attendance'),
     path('manual_attendance/', views.AttendanceCreate.as_view(), name='manual_attendance'),
-    path('attendance_detail/<int:pk>/', views.AttendanceDetail.as_view(), name='attendance_detail'),
 
     # Ajax
     path('view_attendance/<int:pk>/', views.view_attendance, name='view_attendance'),

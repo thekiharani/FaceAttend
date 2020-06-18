@@ -16,6 +16,7 @@ class Course(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
+        db_table = "course"
         verbose_name = _("Course")
         verbose_name_plural = _("Courses") # Translate to multiple languages if necessary
 
@@ -28,9 +29,9 @@ class Enrolment(models.Model):
     student = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     course = models.ForeignKey('attendance.Course', related_name='enrolments', on_delete=models.CASCADE)
     date_enrolled = models.DateTimeField(_('Date Enrolled'), auto_now_add=True)
-    final_grade = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
+        db_table = "enrolment"
         verbose_name = _("Enrolment")
         verbose_name_plural = _("Enrolment")
         unique_together = ('student', 'course',)
@@ -46,6 +47,7 @@ class Attendance(models.Model):
     timestamp = models.DateTimeField(_('Lesson Time'), auto_now_add=True)
 
     class Meta:
+        db_table = "attendance"
         verbose_name = _("Attendance")
         verbose_name_plural = _("Attendance")
 
@@ -61,6 +63,7 @@ class Proof(models.Model):
     proof_pic = models.ImageField(null=True, blank=True)
 
     class Meta:
+        db_table = "attendance_proof"
         verbose_name = _("Attendance Proof")
         verbose_name_plural = _("Attendance Proof")
         unique_together = ('student', 'attendance',)

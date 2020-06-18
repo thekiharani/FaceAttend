@@ -47,5 +47,10 @@ class CustomUser(AbstractUser):
                 img.save(picture_path)
                 self.save()
 
+    class Meta:
+        db_table = "users"
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
+
     def __str__(self):
         return self.name

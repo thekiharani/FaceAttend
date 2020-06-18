@@ -140,19 +140,6 @@ class AttendanceList(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = 'attendance/attendance_list.html'
 
 
-class AttendanceDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    def test_func(self):
-        return self.request.user.is_instructor
-
-    model = Attendance
-
-    def get_object(self, **kwargs):
-        return Attendance.objects.get(pk=self.kwargs['pk'])
-
-    context_object_name = 'attendance'
-    template_name = 'attendance/attendance_view.html'
-
-
 class AttendanceLive(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def test_func(self):
         return self.request.user.is_instructor
