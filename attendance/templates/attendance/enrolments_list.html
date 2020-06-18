@@ -16,6 +16,7 @@
             <tr>
                 <th>Course</th>
                 <th>Date Enrolled</th>
+                <th>Drop Course</th>
             </tr>
         </thead>
         <tbody>
@@ -25,11 +26,14 @@
             <tr>
                 <td>{{ enrolment }}</td>
                 <td>{{ enrolment.date_enrolled }}</td>
+                <td>
+                    <a href="{% url 'attendance:course_drop' pk=enrolment.pk %}" class="btn btn-danger btn-block">Drop</a>
+                </td>
             </tr>
             {% endfor %}
             {% else %}
             <tr>
-                <td colspan="2" class="text-center text-danger">You have not enrolled for any course yet...</td>
+                <td colspan="3" class="text-center text-danger">You have not enrolled for any course yet...</td>
             </tr>
             {% endif %}
         </tbody>

@@ -4,12 +4,12 @@ import numpy as np
 import os
 from django.conf import settings
 from accounts.models import CustomUser
-from .models import Attendance
+from .models import Proof
 
 
 class VideoCamera(object):
 
-    def get_frame(self, lesson):
+    def get_frame(self, attendance):
         video_capture = cv2.VideoCapture(0)
         students = CustomUser.objects.filter(is_instructor=False)
         known_face_encodings = []
@@ -31,6 +31,7 @@ class VideoCamera(object):
         while True:
             # Grab a single frame of video
             ret, frame = video_capture.read()
+            msg = "Processing"
 
             # Resize frame of video to 1/4 size for faster face recognition processing
             small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
@@ -49,7 +50,6 @@ class VideoCamera(object):
                     # See if the face is a match for the known face(s)
                     matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
                     name = "Unknown"
-                    msg = "Processing..."
 
                     # If a match was found in known_face_encodings, use the known face with the smallest distance to
                     # the new face
@@ -59,15 +59,13 @@ class VideoCamera(object):
                         name = known_face_names[best_match_index]
                         student = CustomUser.objects.get(email=name)
                         try:
-                            registered = Attendance.objects.get(student_id=student.pk, lesson_id=lesson)
-                            msg = 'Success...'
-                            path = os.path.join(settings.BASE_DIR, "{}.jpg".format(name))
-                            registered.proof = "{}.jpg".format(name)
-                            registered.save()
-                        except Attendance.DoesNotExist:
-                            Attendance.objects.create(student=student, lesson_id=lesson)
+                            registered = Proof.objects.get(student_id=student.pk, attendance_id=attendance)
+                            if registered:
+                                msg = 'Success'
+                        except Proof.DoesNotExist:
+                            Proof.objects.create(student=student, attendance_id=attendance)
 
-                    face_names.append(msg+" : "+name)
+                    face_names.append(name)
 
             process_this_frame = not process_this_frame
 
@@ -85,17 +83,17 @@ class VideoCamera(object):
                 # Draw a label with a name below the face
                 cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
                 font = cv2.FONT_HERSHEY_DUPLEX
-                cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-
-                crop_img = frame
-                cv2.imwrite(os.path.join(settings.BASE_DIR, "media/{}.jpg".format(name.split(':')[1])), crop_img)
+                cv2.putText(frame, msg+':'+name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
                 try:
                     student = CustomUser.objects.get(email=name)
-                    registered = Attendance.objects.get(student_id=student.pk, lesson_id=lesson)
-                    registered.proof = "{}.jpg".format(name)
+                    registered = Proof.objects.get(student_id=student.pk, attendance_id=attendance)
+                    crop_img = frame
+                    proof_pic = f"{name.split('@')[0]}_{attendance}.jpg"
+                    cv2.imwrite(os.path.join(settings.BASE_DIR, "media", proof_pic), crop_img)
+                    registered.proof_pic = proof_pic
                     registered.save()
-                except Attendance.DoesNotExist:
+                except Proof.DoesNotExist:
                     pass
                 except CustomUser.DoesNotExist:
                     pass

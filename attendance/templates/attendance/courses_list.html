@@ -14,14 +14,14 @@
     </div>
     {% endif %}
     <table class="table table-bordered">
+        {% include 'attendance/partials/_messages.html' %}
         <thead>
             <tr>
                 <th>Course Name</th>
-                {% if user.is_instructor %}
-                    <th>Students Enrolled</th>
-                    <th>Start Lesson</th>
-                    <th>Attendance</th>
-                {% endif %}
+                <th>Students Enrolled</th>
+                <th>Start Lesson</th>
+                <th>Attendance</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -29,24 +29,21 @@
             {% for course in courses %}
             <tr>
                 <td>{{ course.name }}</td>
-                {% if user.is_instructor %}
-                    <td>{{ course.students.count }}</td>
-                    <td>
-                        <a href="{% url 'attendance:lesson_create' %}" class="btn btn-primary btn-block">Start</a>
-                    </td>
-                        <td>
-                        <a href="{% url 'attendance:attendance' %}" class="btn btn-success btn-block">Attendance</a>
-                    </td>
-                {% endif %}
+                <td>{{ course.students.count }}</td>
+                <td>
+                    <a href="{% url 'attendance:live_attendance' pk=course.pk %}" class="btn btn-primary btn-block {% if course.enrolments.count < 1 %}disabled{% endif %}">Start</a>
+                </td>
+                <td>
+                    <a href="{% url 'attendance:attendance' pk=course.pk %}" class="btn btn-success btn-block">Attendance</a>
+                </td>
+                <td>
+                    <a href="{% url 'attendance:course_delete' pk=course.pk %}" class="btn btn-danger btn-block">Delete</a>
+                </td>
             </tr>
             {% endfor %}
             {% else %}
             <tr>
-            {% if user.is_instructor %}
-                <td colspan="4" class="text-center text-danger">There are no courses under you yet...</td>
-            {% else %}
-                <td class="text-center text-danger">You have not enrolled for any course yet...</td>
-            {% endif %}
+                <td colspan="5" class="text-center text-danger">There are no courses under you yet...</td>
             </tr>
             {% endif %}
         </tbody>

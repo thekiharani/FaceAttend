@@ -1,0 +1,9 @@
+<div class="border p-3">
+    {% if attendance.students.count > 0 %}
+        {% for student in attendance.students.all %}
+            <strong>{{ student.name }}</strong> <br>
+        {% endfor %}
+    {% else %}
+        <p class="h4 text-success text-center">No student captured yet for this lesson...</p>
+    {% endif %}
+</div>

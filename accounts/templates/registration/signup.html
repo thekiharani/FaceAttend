@@ -24,3 +24,22 @@
 </div>
 {% endblock content %}
 
+{% block javascript %}
+<script>
+$(document).ready(function () {
+    var instructor = $('#id_is_instructor');
+    var face_pic = $('#div_id_face_pic')
+
+    instructor.on('click', function() {
+       if($(this).is(':checked')) {
+           face_pic.hide();
+           face_pic.find('input').attr('required', false);
+       } else {
+          face_pic.show();
+          face_pic.find('input').attr('required', true);
+       }
+    });
+})
+</script>
+{% endblock javascript %}
+

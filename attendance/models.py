@@ -26,7 +26,7 @@ class Course(models.Model):
 
 class Enrolment(models.Model):
     student = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    course = models.ForeignKey('attendance.Course', on_delete=models.CASCADE)
+    course = models.ForeignKey('attendance.Course', related_name='enrolments', on_delete=models.CASCADE)
     date_enrolled = models.DateTimeField(_('Date Enrolled'), auto_now_add=True)
     final_grade = models.CharField(max_length=1, blank=True, null=True)
 
@@ -39,30 +39,29 @@ class Enrolment(models.Model):
         return f'{self.course} Enrolment'
 
 
-class Lesson(models.Model):
-    instructor = models.ForeignKey(get_user_model(), related_name='lessons', on_delete=models.CASCADE)
-    course = models.ForeignKey('attendance.Course', on_delete=models.CASCADE)
-    done = models.BooleanField(default=False)
-    lesson_time = models.DateTimeField(_('Lesson Date'), auto_now_add=True)
-
-    class Meta:
-        verbose_name = _("Lesson")
-        verbose_name_plural = _("Lessons")
-
-    def __str__(self):
-        return f'{self.course} Lesson'
-
-
 class Attendance(models.Model):
-    lesson = models.ForeignKey('attendance.Lesson', on_delete=models.CASCADE, related_name='attendance')
-    student = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    proof = models.ImageField(null=True, blank=True)
+    course = models.ForeignKey('attendance.Course', on_delete=models.CASCADE, related_name='attendance')
+    students = models.ManyToManyField(get_user_model(), through='Proof')
     timestamp = models.DateTimeField(_('Lesson Time'), auto_now_add=True)
 
     class Meta:
         verbose_name = _("Attendance")
         verbose_name_plural = _("Attendance")
-        unique_together = ('lesson', 'student',)
 
     def __str__(self):
         return self.timestamp
+
+
+class Proof(models.Model):
+    student = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    attendance = models.ForeignKey('attendance.Attendance', on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(_('Date Clocked'), auto_now_add=True)
+    proof_pic = models.ImageField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("Attendance Proof")
+        verbose_name_plural = _("Attendance Proof")
+        unique_together = ('student', 'attendance',)
+
+    def __str__(self):
+        return f'{self.attendance} Proof'

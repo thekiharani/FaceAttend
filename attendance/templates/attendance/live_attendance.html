@@ -4,29 +4,25 @@
 
 {% load widget_tweaks %}
 
-{% block title %}Record Attendance{% endblock %}
+{% block title %}Live Attendance{% endblock %}
 
 {% block content %}
 <div class="container my-5">
-    <!-- Record Attendance -->
+    <!-- Live Attendance -->
     <div class="row">
         <div class="col-md-8">
             <img src="{% url 'attendance:video_feed' %}" alt="" width="100%">
             <div class="my-4 mx-auto d-flex justify-content-between">
                 <div>
-                    <a href="{% url 'attendance:manual_attendance' lesson_id=lesson.pk %}" class="btn btn-primary px-4">Manual Checkin</a>
+                    <a href="{% url 'attendance:manual_attendance' %}" class="btn btn-primary px-4">Manual Checkin</a>
                 </div>
                 <div>
-                    <a href="{% url 'attendance:attendance' %}" class="btn btn-danger px-4">End Session</a>
+                    <a href="{% url 'attendance:attendance' pk=course.pk %}" class="btn btn-danger px-4">End Session</a>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="border p-3">
-                {% for attendance in lesson.attendance.all %}
-                    <strong>{{ attendance.student }}</strong> <br>
-                {% endfor %}
-            </div>
+            <span id="render"></span>
         </div>
     </div>
 </div>
@@ -34,7 +30,22 @@
 
 {% block javascript %}
 <script>
-console.log('We are here today...')
+$(document).ready(function () {
+    function update_attendance() {
+        $.ajax({
+            type: 'GET',
+            url: {% url 'attendance:update_attendance' %},
+            success: function (res) {
+                $('#render').html(res)
+                console.log(res)
+            }
+        })
+    }
+
+    setInterval(function () {
+        update_attendance();
+    }, 2000);
+})
 </script>
 {% endblock javascript %}
 

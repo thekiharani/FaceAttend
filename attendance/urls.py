@@ -4,20 +4,22 @@ from . import views
 app_name = 'attendance'
 
 urlpatterns = [
-    path('', views.HomeView.as_view(), name='home'),
-    path('courses/', views.CoursesListView.as_view(), name='courses'),
-    path('courses/add/', views.CourseCreateView.as_view(), name='course_create'),
-    path('lessons/', views.LessonsListView.as_view(), name='lessons'),
-    path('lessons/add/', views.LessonCreateView.as_view(), name='lesson_create'),
-    path('my_courses/', views.EnrolmentListView.as_view(), name='my_courses'),
-    path('register_course/', views.EnrolmentCreateView.as_view(), name='register_course'),
-    path('attendance/', views.AttendanceListView.as_view(), name='attendance'),
-    path('live_attendance/<int:lesson_id>/', views.AttendanceLive.as_view(), name='live_attendance'),
-    path('manual_attendance/<int:lesson_id>/', views.AttendanceCreate.as_view(), name='manual_attendance'),
+    path('', views.HomePage.as_view(), name='home'),
+    path('courses/', views.CoursesList.as_view(), name='courses'),
+    path('courses/add/', views.CourseCreate.as_view(), name='course_create'),
+    path('my_courses/', views.EnrolmentList.as_view(), name='my_courses'),
+    path('course/<int:pk>/drop/', views.EnrolmentDelete.as_view(), name='course_drop'),
+    path('course/<int:pk>/delete/', views.CourseDelete.as_view(), name='course_delete'),
+    path('register_course/', views.EnrolmentCreate.as_view(), name='register_course'),
+    path('attendance/<int:pk>/', views.AttendanceList.as_view(), name='attendance'),
+    path('live_attendance/<int:pk>/', views.AttendanceLive.as_view(), name='live_attendance'),
+    path('manual_attendance/', views.AttendanceCreate.as_view(), name='manual_attendance'),
     path('attendance_detail/<int:pk>/', views.AttendanceDetail.as_view(), name='attendance_detail'),
 
     # Ajax
-    path('update_attendance/<int:lesson_id>/', views.update_attendance, name='update_attendance'),
+    path('view_attendance/<int:pk>/', views.view_attendance, name='view_attendance'),
+    path('update_attendance/', views.update_attendance, name='update_attendance'),
+    path('view_proof/<int:pks>/<int:pka>/', views.view_proof, name='view_proof'),
 
     # Streaming
     path('video_feed/', views.video_feed, name='video_feed'),

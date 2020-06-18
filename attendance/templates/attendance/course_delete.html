@@ -1,0 +1,26 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Delete Course Confirmation{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- ADD COURSE -->
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <p class="h3 card-header text-center">Delete Course Confirmation</p>
+                <div class="card-body">
+                    <p>Hi {{ user.name }}, we thought it fair to let you confirm that you intend to delete this course. Please note that deleting this course will permanently delete all records associated with it, including students enrolments and attendance records.</p>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-block btn-lg">Confirm Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>
+{% endblock content %}
+

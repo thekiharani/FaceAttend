@@ -10,7 +10,7 @@
     <p class="h3 text-center">Scheduled Lessons</p>
     {% if user.is_instructor %}
     <div class="my-2 text-right">
-        <a href="{% url 'attendance:lesson_create' %}" class="btn btn-primary">Add Lesson</a>
+        <a href="{% url 'attendance:proof_create' %}" class="btn btn-primary">Add Lesson</a>
     </div>
     {% endif %}
     <table class="table table-bordered">
@@ -23,19 +23,19 @@
         </thead>
         <tbody>
 
-            {% if lessons %}
-            {% for lesson in lessons %}
+            {% if proofs %}
+            {% for proof in proofs %}
             <tr>
-                <td>{{ lesson }}</td>
+                <td>{{ proof }}</td>
                 <td>
-                    <a href="{% url 'attendance:live_attendance' lesson_id=lesson.pk %}" class="btn btn-primary btn-block">Start</a>
+                    <a href="{% url 'attendance:live_attendance' proof_id=proof.pk %}" class="btn btn-primary btn-block">Start</a>
                 </td>
                 <td></td>
             </tr>
             {% endfor %}
             {% else %}
             <tr>
-                <td colspan="3" class="text-center text-danger">No lessons yet...</td>
+                <td colspan="3" class="text-center text-danger">No proofs yet...</td>
             </tr>
             {% endif %}
         </tbody>
