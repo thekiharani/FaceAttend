@@ -11,6 +11,7 @@ class VideoCamera(object):
 
     def get_frame(self, attendance_id, course_id):
         video_capture = cv2.VideoCapture(0)
+        video_capture.set(cv2.CAP_PROP_FPS, int(15000))
         course = Course.objects.get(pk=course_id)
         students = course.students.all()
         known_face_encodings = []

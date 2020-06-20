@@ -12,6 +12,7 @@
         <a href="{% url 'attendance:register_course' %}" class="btn btn-primary">Register New Course</a>
     </div>
     <table class="table table-bordered">
+    {% include 'attendance/partials/_messages.html' %}
         <thead>
             <tr>
                 <th>Course</th>
