@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 Django = "*"
 django-crispy-forms = "*"
-django-widget-tweaks = "*"
 Pillow = "*"
 cmake = "*"
 face-recognition = "*"

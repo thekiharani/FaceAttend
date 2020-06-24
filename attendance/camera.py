@@ -95,7 +95,8 @@ class VideoCamera(object):
                     crop_img = frame
                     proof_pic = f"{name.split('@')[0]}_{attendance_id}.jpg"
                     cv2.imwrite(os.path.join(settings.BASE_DIR, "media", proof_pic), crop_img)
-                    registered.proof_pic = proof_pic
+                    if not registered.proof_pic:
+                        registered.proof_pic = proof_pic
                     registered.save()
                 except Proof.DoesNotExist:
                     pass

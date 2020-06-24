@@ -25,7 +25,6 @@ INSTALLED_APPS = [
 
      # Third Party
     'crispy_forms',
-    'widget_tweaks',
 
     # Core
     'django.contrib.admin',
